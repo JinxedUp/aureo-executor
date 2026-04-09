@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aureo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #b8820a;
+    --gold-light: #d4a020;
+    --gold-bright: #e8b830;
+    --bg: #0b0900;
+    --border: rgba(180,130,10,0.18);
+    --text: #d4c49a;
+    --muted: #6b5a30;
+    --faint: #1e1800;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    scroll-snap-type: y proximity;
+  }
+
+  /* â”€â”€ NAV â”€â”€ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+    background: rgba(11,9,0,0.8);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(180,130,10,0.1);
+  }
+
+  .nav-logo {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--gold-light);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-center {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-center a {
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+
+  .nav-center a:hover { color: var(--gold-light); }
+
+  .nav-dl {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--gold);
+    color: #060400;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .nav-dl:hover { background: var(--gold-light); }
+  .nav-dl svg { width: 10px; height: 10px; fill: currentColor; }
+
+  /* â”€â”€ HERO â”€â”€ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 5rem;
+    position: relative;
+  }
+
+  /* corner brackets */
+  .corner {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    opacity: 0.3;
+  }
+
+  .c-tl { top: 5.5rem; left: 2.5rem; border-top: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+  .c-tr { top: 5.5rem; right: 2.5rem; border-top: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+  .c-bl { bottom: 2rem; left: 2.5rem; border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold); }
+  .c-br { bottom: 2rem; right: 2.5rem; border-bottom: 1px solid var(--gold); border-right: 1px solid var(--gold); }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: up 0.7s 0.05s ease forwards;
+  }
+
+  .eyebrow-rule { width: 36px; height: 1px; background: var(--gold); opacity: 0.5; }
+
+  .eyebrow-text {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* big wordmark */
+  .wordmark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(80px, 18vw, 180px);
+    font-weight: 700;
+    line-height: 0.88;
+    letter-spacing: -0.01em;
+    background: linear-gradient(160deg, #a07008 0%, #c8980e 25%, #f0c030 50%, #c8980e 75%, #8a5e04 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: up 0.7s 0.12s ease forwards;
+  }
+
+  .hero-tagline {
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 300;
+    color: #b0a070;
+    letter-spacing: 0.01em;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: up 0.7s 0.2s ease forwards;
+  }
+
+  .hero-tagline em {
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15em;
+    color: var(--gold-light);
+  }
+
+  .hero-tagline .tagline-rotator {
+    position: relative;
+    display: inline-grid;
+    min-width: 6.8ch;
+    margin-left: 0.12em;
+    vertical-align: baseline;
+  }
+
+  .hero-tagline .tagline-word {
+    grid-area: 1 / 1;
+    text-align: left;
+    white-space: nowrap;
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+      transform 0.72s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.52s ease;
+    will-change: transform, opacity;
+  }
+
+  .hero-tagline .tagline-word.is-exiting {
+    transform: translateY(-55%);
+    opacity: 0;
+  }
+
+  .hero-tagline .tagline-word.is-entering {
+    transform: translateY(55%);
+    opacity: 0;
+  }
+
+  .hero-tagline .tagline-word.is-active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.85;
+    max-width: 400px;
+    margin-bottom: 2.8rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: up 0.7s 0.28s ease forwards;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: up 0.7s 0.36s ease forwards;
+  }
+
+  .hero-panel {
+    width: min(860px, 100%);
+    margin: 3.5rem auto 0;
+    padding: 1px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, rgba(232,184,48,0.5), rgba(180,130,10,0.08) 50%, rgba(232,184,48,0.35));
+    box-shadow: 0 30px 90px rgba(0,0,0,0.45);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: up 0.9s 0.48s ease forwards;
+  }
+
+  .hero-panel::before {
+    content: "";
+    position: absolute;
+    inset: -30%;
+    background: linear-gradient(110deg, transparent 25%, rgba(255,232,170,0.18) 50%, transparent 75%);
+    transform: translateX(-55%) rotate(8deg);
+    animation: sweep 5.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .aureo-visual {
+    min-height: 318px;
+    border: 1px solid rgba(180,130,10,0.14);
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top, rgba(232,184,48,0.045), transparent 38%),
+      radial-gradient(circle at center, rgba(232,184,48,0.04), transparent 28%),
+      linear-gradient(180deg, rgba(18,14,2,0.96), rgba(8,6,0,0.98));
+  }
+
+  .aureo-visual::before {
+    content: "";
+    position: absolute;
+    inset: 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(232,184,48,0.06);
+    pointer-events: none;
+  }
+
+  .aureo-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, transparent, rgba(232,184,48,0.04), transparent),
+      linear-gradient(180deg, transparent, rgba(232,184,48,0.03), transparent);
+    mask-image: radial-gradient(circle at center, black 28%, transparent 84%);
+    pointer-events: none;
+  }
+
+  .visual-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,184,48,0.028) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,184,48,0.028) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.45;
+    mask-image: radial-gradient(circle at center, black 18%, transparent 78%);
+  }
+
+  .visual-axis {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(660px, calc(100% - 108px));
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(232,184,48,0.08) 12%, rgba(232,184,48,0.14) 50%, rgba(232,184,48,0.08) 88%, transparent);
+    transform: translate(-50%, -50%);
+  }
+
+  .visual-axis::before,
+  .visual-axis::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(232,184,48,0.32);
+    box-shadow: 0 0 12px rgba(232,184,48,0.08);
+    transform: translateY(-50%);
+  }
+
+  .visual-axis::before { left: 0; }
+  .visual-axis::after { right: 0; }
+
+  .visual-network {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .visual-network svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .network-path {
+    fill: none;
+    stroke: rgba(232,184,48,0.12);
+    stroke-width: 1.15;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 8px rgba(232,184,48,0.05));
+  }
+
+  .network-path.soft {
+    stroke: rgba(232,184,48,0.08);
+  }
+
+  .visual-node {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(232,184,48,0.42);
+    box-shadow: 0 0 12px rgba(232,184,48,0.1);
+  }
+
+  .visual-node.lt-a { top: calc(31% - 3px); left: calc(206px - 3px); }
+  .visual-node.lt-b { top: calc(42% - 3px); left: calc(334px - 3px); }
+  .visual-node.lb-a { top: calc(66% - 3px); left: calc(216px - 3px); }
+  .visual-node.lb-b { top: calc(58% - 3px); left: calc(338px - 3px); }
+  .visual-node.rt-a { top: calc(32% - 3px); right: calc(208px - 3px); }
+  .visual-node.rt-b { top: calc(43% - 3px); right: calc(336px - 3px); }
+  .visual-node.rb-a { top: calc(65% - 3px); right: calc(218px - 3px); }
+  .visual-node.rb-b { top: calc(57% - 3px); right: calc(338px - 3px); }
+
+  .visual-orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(232,184,48,0.11);
+    transform: translate(-50%, -50%);
+  }
+
+  .visual-orbit.outer {
+    width: 500px;
+    height: 500px;
+    opacity: 0.14;
+  }
+
+  .visual-orbit.inner {
+    width: 290px;
+    height: 290px;
+    opacity: 0.22;
+  }
+
+  .visual-core-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 220px;
+    height: 220px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle, rgba(232,184,48,0.06), rgba(232,184,48,0) 70%);
+  }
+
+  .visual-core-wrap::before {
+    content: "";
+    position: absolute;
+    inset: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(232,184,48,0.06);
+  }
+
+  .visual-core-wrap::after {
+    content: "";
+    position: absolute;
+    inset: 36px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,226,150,0.12), rgba(232,184,48,0) 72%);
+    filter: blur(12px);
+  }
+
+  .visual-core {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 164px;
+    height: 164px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle, rgba(255,243,214,0.84) 0%, rgba(232,184,48,0.44) 16%, rgba(184,130,10,0.06) 44%, rgba(184,130,10,0) 74%);
+    box-shadow:
+      0 0 56px rgba(232,184,48,0.08),
+      inset 0 1px 0 rgba(255,244,220,0.16),
+      inset 0 -18px 30px rgba(25,16,1,0.28),
+      0 16px 28px rgba(0,0,0,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .visual-core::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,241,208,0.1);
+    pointer-events: none;
+  }
+
+  .visual-core img {
+    width: 108px;
+    height: auto;
+    display: block;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow:
+      inset 0 1px 0 rgba(255,244,220,0.1),
+      0 10px 24px rgba(18,12,1,0.22);
+    filter: saturate(1.04) contrast(1.02);
+  }
+
+  .visual-pill {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 176px;
+    padding: 0.74rem 0.95rem;
+    border: 1px solid rgba(180,130,10,0.1);
+    border-radius: 16px;
+    background: linear-gradient(180deg, rgba(13,10,1,0.84), rgba(10,8,1,0.76));
+    backdrop-filter: blur(12px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+  }
+
+  .visual-pill.left {
+    top: 25%;
+    left: 30px;
+  }
+
+  .visual-pill.right {
+    top: 26%;
+    right: 30px;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .visual-pill.left-lower {
+    top: 61%;
+    left: 44px;
+  }
+
+  .visual-pill.right-lower {
+    top: 61%;
+    right: 44px;
+    justify-content: flex-end;
+    text-align: right;
+  }
+
+  .pill-mark {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(232,184,48,0.78);
+    box-shadow: 0 0 16px rgba(232,184,48,0.18);
+    flex: 0 0 10px;
+  }
+
+  .pill-copy {
+    display: grid;
+    gap: 0.18rem;
+  }
+
+  .pill-label {
+    font-size: 9px;
+    letter-spacing: 2.8px;
+    text-transform: uppercase;
+    color: #7f6730;
+  }
+
+  .pill-value {
+    font-size: 14px;
+    color: #d4bf83;
+  }
+
+  .visual-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(55px);
+    opacity: 0.38;
+    pointer-events: none;
+  }
+
+  .visual-glow.left {
+    width: 160px;
+    height: 160px;
+    left: 10%;
+    bottom: 12%;
+    background: rgba(232,184,48,0.12);
+  }
+
+  .visual-glow.right {
+    width: 170px;
+    height: 170px;
+    right: 10%;
+    top: 12%;
+    background: rgba(184,130,10,0.1);
+  }
+
+  .btn-fill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: #060400;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 13px 32px;
+    border-radius: 999px;
+    text-decoration: none;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .btn-fill:hover { background: var(--gold-light); }
+  .btn-fill svg { width: 12px; height: 12px; fill: currentColor; }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 13px 32px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  @keyframes up {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes sweep {
+    0%, 100% { transform: translateX(-55%) rotate(8deg); opacity: 0; }
+    20% { opacity: 1; }
+    55% { transform: translateX(58%) rotate(8deg); opacity: 1; }
+    70% { opacity: 0; }
+  }
+
+  /* â”€â”€ DIVIDER â”€â”€ */
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  .story-section {
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    scroll-margin-top: 72px;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .story-reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(8px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.7s ease;
+  }
+
+  .story-reveal.delay-1 { transition-delay: 0.08s; }
+  .story-reveal.delay-2 { transition-delay: 0.16s; }
+  .story-reveal.delay-3 { transition-delay: 0.24s; }
+
+  .story-section.is-active .story-reveal {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  /* â”€â”€ STATS â”€â”€ */
+  .stats {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgba(180,130,10,0.08);
+  }
+
+  .stat {
+    padding: 2rem 3.5rem;
+    text-align: center;
+    border-right: 1px solid rgba(180,130,10,0.08);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--gold-light);
+    display: block;
+    line-height: 1;
+    margin-bottom: 5px;
+  }
+
+  .stat-lbl {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .why {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .why-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .why-copy h2,
+  .trust-copy h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 5vw, 64px);
+    font-weight: 600;
+    color: var(--gold-light);
+    line-height: 0.95;
+    margin-bottom: 1rem;
+  }
+
+  .why-copy p,
+  .trust-copy p {
+    max-width: 470px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+
+  .why-stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .why-card {
+    padding: 1.35rem;
+    border: 1px solid rgba(180,130,10,0.11);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at top right, rgba(232,184,48,0.12), transparent 34%),
+      linear-gradient(180deg, rgba(18,14,2,0.94), rgba(10,8,0,0.98));
+    box-shadow: 0 18px 44px rgba(0,0,0,0.18);
+  }
+
+  .why-card .stats {
+    border-bottom: none;
+  }
+
+  .why-note {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(180,130,10,0.08);
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  .steps {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 5.5rem 2rem 1rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .step {
+    padding: 1.35rem;
+    border: 1px solid rgba(180,130,10,0.11);
+    background:
+      linear-gradient(180deg, rgba(20,15,2,0.92), rgba(12,9,0,0.95));
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.45s, transform 0.45s, border-color 0.25s;
+  }
+
+  .step::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(232,184,48,0.14), transparent 38%);
+    pointer-events: none;
+  }
+
+  .step.on { opacity: 1; transform: none; }
+  .step:hover { border-color: rgba(232,184,48,0.28); }
+
+  .step-no {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    color: var(--gold-light);
+    margin-bottom: 0.8rem;
+    line-height: 1;
+  }
+
+  .step-name {
+    font-size: 14px;
+    color: #ccb87f;
+    margin-bottom: 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  /* â”€â”€ FEATURES â”€â”€ */
+  .features {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 6rem 2rem 7rem;
+  }
+
+  .features.story-section {
+    max-width: 1120px;
+    padding: 6rem 2rem;
+  }
+
+  .features-shell {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .features-intro {
+    position: sticky;
+    top: 88px;
+  }
+
+  .features-intro h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 5vw, 62px);
+    font-weight: 600;
+    color: var(--gold-light);
+    line-height: 0.95;
+    margin-bottom: 1rem;
+  }
+
+  .features-intro p {
+    max-width: 360px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+
+  .features-list {
+    width: 100%;
+  }
+
+  .sec-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 3rem;
+  }
+
+  .sec-rule { width: 24px; height: 1px; background: var(--gold); opacity: 0.5; }
+
+  .sec-eyebrow span {
+    font-size: 10px;
+    letter-spacing: 3.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .feat {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(180,130,10,0.07);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.45s, transform 0.45s;
+  }
+
+  .feat:first-of-type { border-top: 1px solid rgba(180,130,10,0.07); }
+  .feat.on { opacity: 1; transform: none; }
+
+  .feat-num {
+    font-size: 11px;
+    color: #2e2400;
+    letter-spacing: 1px;
+    padding-top: 2px;
+  }
+
+  .feat-body {}
+
+  .feat-name {
+    font-size: 14px;
+    font-weight: 400;
+    color: #c8b880;
+    margin-bottom: 4px;
+  }
+
+  .feat-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .trust {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 6rem 2rem;
+  }
+
+  .trust-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .trust-stack {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .trust-card {
+    padding: 1.4rem;
+    border: 1px solid rgba(180,130,10,0.11);
+    border-radius: 28px;
+    background:
+      radial-gradient(circle at top right, rgba(232,184,48,0.1), transparent 32%),
+      linear-gradient(180deg, rgba(18,14,2,0.94), rgba(10,8,0,0.98));
+  }
+
+  .trust-kicker {
+    font-size: 10px;
+    letter-spacing: 2.8px;
+    text-transform: uppercase;
+    color: #8a7036;
+    margin-bottom: 0.45rem;
+  }
+
+  .trust-title {
+    font-size: 18px;
+    color: #d1bd82;
+    margin-bottom: 0.4rem;
+  }
+
+  .trust-desc {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--muted);
+  }
+
+  /* â”€â”€ CTA â”€â”€ */
+  .cta {
+    border-top: 1px solid rgba(180,130,10,0.1);
+    padding: 6rem 2rem;
+    text-align: center;
+  }
+
+  .cta-shell {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.25rem;
+    border-radius: 30px;
+    border: 1px solid rgba(180,130,10,0.14);
+    background:
+      radial-gradient(circle at top, rgba(232,184,48,0.08), transparent 34%),
+      linear-gradient(180deg, rgba(17,13,2,0.96), rgba(8,6,0,0.98));
+    box-shadow: 0 22px 70px rgba(0,0,0,0.28);
+  }
+
+  .cta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  .cta p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .cta-points {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.65rem;
+  }
+
+  .cta-point {
+    padding: 0.72rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(180,130,10,0.12);
+    background: rgba(17,13,2,0.78);
+    font-size: 11px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: #b79f60;
+  }
+
+  .cta-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+  /* â”€â”€ FOOTER â”€â”€ */
+  footer {
+    border-top: 1px solid rgba(180,130,10,0.07);
+    padding: 1.5rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #2e2400;
+  }
+
+  .footer-note { font-size: 11px; color: #1e1800; }
+
+  @media (max-width: 600px) {
+    .nav-center { display: none; }
+    .corner { display: none; }
+    .stats { flex-wrap: wrap; }
+    .stat { min-width: 50%; }
+  }
+
+  @media (max-width: 820px) {
+    body {
+      scroll-snap-type: none;
+    }
+
+    .why-grid,
+    .features-shell,
+    .trust-grid,
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .features-intro {
+      position: static;
+    }
+
+    .hero-panel {
+      margin-top: 2.6rem;
+    }
+
+    .visual-network,
+    .visual-axis {
+      display: none;
+    }
+
+    .visual-core-wrap {
+      width: 214px;
+      height: 214px;
+    }
+
+    .visual-pill {
+      min-width: 132px;
+      padding: 0.72rem 0.85rem;
+    }
+
+    .visual-pill.left,
+    .visual-pill.right,
+    .visual-pill.left-lower,
+    .visual-pill.right-lower {
+      top: auto;
+      transform: none;
+    }
+
+    .visual-pill.left {
+      left: 26px;
+      bottom: 94px;
+    }
+
+    .visual-pill.right {
+      right: 26px;
+      bottom: 94px;
+    }
+
+    .visual-pill.left-lower {
+      left: 26px;
+      bottom: 26px;
+    }
+
+    .visual-pill.right-lower {
+      right: 26px;
+      bottom: 26px;
+    }
+
+    .cta-shell {
+      padding: 1.6rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Aureo</a>
+  <ul class="nav-center">
+    <li><a href="#features">Features</a></li>
+    <li><a href="https://discord.gg/zg8ZJhCBK8" target="_blank" rel="noopener">Community</a></li>
+  </ul>
+  <a href="https://discord.gg/zg8ZJhCBK8" class="nav-dl" target="_blank" rel="noopener">
+    <svg viewBox="0 0 10 10"><polygon points="2,1 9,5 2,9"/></svg>
+    Download
+  </a>
+</nav>
+
+<section class="hero">
+  <div class="corner c-tl"></div>
+  <div class="corner c-tr"></div>
+  <div class="corner c-bl"></div>
+  <div class="corner c-br"></div>
+
+  <div class="hero-eyebrow">
+    <div class="eyebrow-rule"></div>
+    <span class="eyebrow-text">Free Roblox Executor</span>
+    <div class="eyebrow-rule"></div>
+  </div>
+
+  <div class="wordmark">AUREO</div>
+
+  <p class="hero-tagline">
+    Makes exploiting
+    <span class="tagline-rotator" aria-live="polite">
+      <em class="tagline-word is-active" id="tagline-word-current">easier.</em>
+      <em class="tagline-word is-entering" id="tagline-word-next" aria-hidden="true">faster.</em>
+    </span>
+  </p>
+
+  <p class="hero-sub">
+    Fast injection. Clean interface. No setup headaches.<br>
+    Aureo gets out of your way and lets you run whatever you want.
+  </p>
+
+  <div class="hero-btns">
+    <a href="https://discord.gg/zg8ZJhCBK8" class="btn-fill" target="_blank" rel="noopener">
+      <svg viewBox="0 0 12 12"><path d="M6 1v7M3 5l3 3 3-3M1 10h10"/></svg>
+      Free Download
+    </a>
+    <a href="https://discord.gg/zg8ZJhCBK8" class="btn-ghost" target="_blank" rel="noopener">
+      Join Discord
+    </a>
+  </div>
+
+  <div class="hero-panel" aria-hidden="true">
+    <div class="aureo-visual">
+      <div class="visual-grid"></div>
+      <div class="visual-axis"></div>
+      <div class="visual-network">
+        <svg viewBox="0 0 860 340" preserveAspectRatio="none" aria-hidden="true">
+          <path class="network-path" d="M205 106 C250 106, 286 116, 334 142 S400 166, 430 170"/>
+          <path class="network-path soft" d="M215 224 C262 224, 294 208, 338 196 S399 178, 430 170"/>
+          <path class="network-path" d="M655 109 C610 109, 576 120, 528 144 S462 166, 430 170"/>
+          <path class="network-path soft" d="M645 220 C598 220, 566 204, 522 193 S462 178, 430 170"/>
+        </svg>
+        <div class="visual-node lt-a"></div>
+        <div class="visual-node lt-b"></div>
+        <div class="visual-node lb-a"></div>
+        <div class="visual-node lb-b"></div>
+        <div class="visual-node rt-a"></div>
+        <div class="visual-node rt-b"></div>
+        <div class="visual-node rb-a"></div>
+        <div class="visual-node rb-b"></div>
+      </div>
+      <div class="visual-glow left"></div>
+      <div class="visual-glow right"></div>
+      <div class="visual-orbit outer"></div>
+      <div class="visual-orbit inner"></div>
+      <div class="visual-core-wrap">
+        <div class="visual-core">
+          <img src="aureo.png" alt="Aureo logo"/>
+        </div>
+      </div>
+      <div class="visual-pill left">
+        <div class="pill-mark"></div>
+        <div class="pill-copy">
+          <div class="pill-label">Injection</div>
+          <div class="pill-value">Fast attach</div>
+        </div>
+      </div>
+      <div class="visual-pill right">
+        <div class="pill-copy">
+          <div class="pill-label">Quality</div>
+          <div class="pill-value">Clean and stable</div>
+        </div>
+        <div class="pill-mark"></div>
+      </div>
+      <div class="visual-pill left-lower">
+        <div class="pill-mark"></div>
+        <div class="pill-copy">
+          <div class="pill-label">Performance</div>
+          <div class="pill-value">Light and smooth</div>
+        </div>
+      </div>
+      <div class="visual-pill right-lower">
+        <div class="pill-copy">
+          <div class="pill-label">Updates</div>
+          <div class="pill-value">Always up to date</div>
+        </div>
+        <div class="pill-mark"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<section class="story-section why" id="why">
+  <div class="why-grid">
+    <div class="why-copy story-reveal">
+      <div class="sec-eyebrow">
+        <div class="sec-rule"></div>
+        <span>Why Aureo</span>
+      </div>
+      <h2>Built to feel fast, clean, and easy to trust.</h2>
+      <p>Aureo is designed to stay out of your way. The goal is simple: quick attach, a cleaner experience, and a workflow that feels stable from the first launch to the latest update.</p>
+    </div>
+    <div class="why-stack story-reveal delay-1">
+      <div class="why-card">
+        <div class="stats">
+          <div class="stat"><span class="stat-val">Fast</span><span class="stat-lbl">Injection</span></div>
+          <div class="stat"><span class="stat-val">UNC</span><span class="stat-lbl">Compatible</span></div>
+          <div class="stat"><span class="stat-val">99.9%</span><span class="stat-lbl">Uptime</span></div>
+          <div class="stat"><span class="stat-val">Free</span><span class="stat-lbl">No key system</span></div>
+        </div>
+        <div class="why-note">Aureo focuses on the things people actually care about: fast attach, strong compatibility, steady builds, and no extra friction.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features story-section" id="features">
+  <div class="features-shell">
+    <div class="features-intro story-reveal">
+      <div class="sec-eyebrow">
+        <div class="sec-rule"></div>
+        <span>Features</span>
+      </div>
+      <h2>Everything important, nothing bloated.</h2>
+      <p>Scroll through the core reasons people use Aureo. The emphasis stays on a clean workflow, strong compatibility, and a better overall feel from start to finish.</p>
+    </div>
+    <div class="features-list story-reveal delay-1">
+      <div class="feat"><div class="feat-num">01</div><div class="feat-body"><div class="feat-name">Fast injection</div><div class="feat-desc">Injects quickly, attaches cleanly, and gets you running without stalls.</div></div></div>
+      <div class="feat"><div class="feat-num">02</div><div class="feat-body"><div class="feat-name">Stays undetected</div><div class="feat-desc">Built to stay updated and keep your sessions feeling dependable.</div></div></div>
+      <div class="feat"><div class="feat-num">03</div><div class="feat-body"><div class="feat-name">Clean UI</div><div class="feat-desc">Simple layout, easy controls, and no clutter slowing you down.</div></div></div>
+      <div class="feat"><div class="feat-num">04</div><div class="feat-body"><div class="feat-name">High UNC %</div><div class="feat-desc">Strong compatibility so more scripts run the way you expect.</div></div></div>
+      <div class="feat"><div class="feat-num">05</div><div class="feat-body"><div class="feat-name">Good performance</div><div class="feat-desc">Smooth execution, steady response, and a lighter feel while running.</div></div></div>
+      <div class="feat"><div class="feat-num">06</div><div class="feat-body"><div class="feat-name">High quality</div><div class="feat-desc">Polished updates, solid builds, and an overall cleaner experience.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="story-section trust" id="trust">
+  <div class="trust-grid">
+    <div class="trust-copy story-reveal">
+      <div class="sec-eyebrow">
+        <div class="sec-rule"></div>
+        <span>Trust / Updates / Community</span>
+      </div>
+      <h2>One place for the build, the updates, and the people behind it.</h2>
+      <p>Good tools feel more trustworthy when the flow is obvious. Get the latest build, stay current when patches land, and keep support close without digging through random pages.</p>
+    </div>
+    <div class="trust-stack story-reveal delay-1">
+      <div class="trust-card">
+        <div class="trust-kicker">Get started</div>
+        <div class="trust-title">Download, inject, execute</div>
+        <div class="trust-desc">The process stays simple: grab the latest build in Discord, attach quickly, and get straight into your workflow.</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-kicker">Updates</div>
+        <div class="trust-title">Always up to date</div>
+        <div class="trust-desc">Patch notices and fresh builds stay in one place, so you always know where to go when something changes.</div>
+      </div>
+      <div class="trust-card">
+        <div class="trust-kicker">Community</div>
+        <div class="trust-title">Support stays close</div>
+        <div class="trust-desc">Discord acts as the hub for releases, support, and the people already using Aureo every day.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta story-section">
+  <div class="cta-shell story-reveal">
+    <h2>Ready to run?</h2>
+    <div class="cta-points">
+      <div class="cta-point">Latest build in Discord</div>
+      <div class="cta-point">Fast update drops</div>
+      <div class="cta-point">Free access</div>
+    </div>
+    <p>Get the latest Aureo build, patch notices, and support in Discord. Everything you need stays in one place, always up to date.</p>
+    <div class="cta-btns">
+      <a href="https://discord.gg/zg8ZJhCBK8" class="btn-fill" target="_blank" rel="noopener">Get Aureo - Free</a>
+      <a href="https://discord.gg/zg8ZJhCBK8" class="btn-ghost" target="_blank" rel="noopener">Join Discord</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Aureo</div>
+  <div class="footer-note">Not affiliated with Roblox Corporation</div>
+</footer>
+
+<script>
+  const rotatingWords = ['easier.', 'faster.', 'cleaner.', 'simpler.', 'stable.'];
+  let currentWord = document.getElementById('tagline-word-current');
+  let nextWord = document.getElementById('tagline-word-next');
+  let activeWordIndex = 0;
+
+  if (currentWord && nextWord) {
+    window.setInterval(() => {
+      const upcomingWordIndex = (activeWordIndex + 1) % rotatingWords.length;
+
+      nextWord.textContent = rotatingWords[upcomingWordIndex];
+      currentWord.classList.remove('is-active');
+      currentWord.classList.add('is-exiting');
+      nextWord.classList.remove('is-entering');
+      nextWord.classList.add('is-active');
+
+      window.setTimeout(() => {
+        currentWord.classList.remove('is-exiting');
+        currentWord.classList.add('is-entering');
+
+        const previousWord = currentWord;
+        currentWord = nextWord;
+        nextWord = previousWord;
+      }, 720);
+
+      activeWordIndex = upcomingWordIndex;
+    }, 2400);
+  }
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      entry.target.classList.toggle('is-active', entry.isIntersecting);
+    });
+  }, { threshold: 0.42 });
+
+  document.querySelectorAll('.story-section').forEach(section => {
+    sectionObserver.observe(section);
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('on'), +e.target.dataset.d);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.step, .feat').forEach((el, i) => { el.dataset.d = i * 55; io.observe(el); });
+</script>
+</body>
+</html>
